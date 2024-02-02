@@ -25,3 +25,6 @@ venv/
 
 # Ignore Jupyter Notebook checkpoints
 .ipynb_checkpoints/
+
+# Ignore my own files
+/configuration.py
