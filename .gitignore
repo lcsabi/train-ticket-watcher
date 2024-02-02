@@ -1,0 +1,27 @@
+# .gitignore for Poetry project in IntelliJ IDEA
+
+# Poetry-specific files
+poetry.lock
+__pycache__/
+.idea/
+
+# Virtual environment
+venv/
+.env/
+
+# Python bytecode
+*.pyc
+*.pyo
+
+# Editor-specific files
+.vscode/
+*.sublime-*
+*.sublime-workspace
+
+# Ignore local configuration
+.idea/*
+*.iml
+*.iws
+
+# Ignore Jupyter Notebook checkpoints
+.ipynb_checkpoints/

@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "train-ticket-watcher"
+version = "0.1.0"
+description = ""
+authors = ["László Csaba <laszlo.cs4ba@gmail.com>"]
+readme = "README.md"
+packages = [{include = "train_ticket_watcher"}]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+requests = "^2.31.0"
+uuid = "^1.30"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
