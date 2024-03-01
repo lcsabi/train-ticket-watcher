@@ -1,11 +1,9 @@
 import json
-from typing import List
 
 import requests
 from requests import Response
 
 import config
-from classes import Ticket, Offer
 
 url = config.endpoint
 headers = config.headers
@@ -14,27 +12,54 @@ response: Response = requests.post(url, headers=headers, json=data)
 
 if response.status_code == 200:
     try:
-        parsed_response: dict = response.json()
-        offers_response: dict = parsed_response["route"]
-        all_offers: List[Offer] = []
+        raw_response: dict = response.json()['route']
+        parsed_response = dict()
+        offers_list = list()
 
-        for offer in offers_response:
-            if offer["transfersCount"] > 1:
-                continue
-            offer_object: Offer = Offer(offer)
-            tickets_response: dict = offer["details"]["tickets"]
-            for ticket in tickets_response:
-                ticket_object: Ticket = Ticket(ticket)
-                offer_object.add_ticket(ticket_object)
+        # Offer information
+        for offer in raw_response:
+            current_offer_dict = dict()
+            tickets = offer['details']['tickets']
+            current_offer_dict['tickets'] = list()
 
-            all_offers.append(offer_object)
+            # Ticket information
+            for ticket in tickets:
+                current_ticket_dict = dict()
+                current_ticket_dict['full_price_huf'] = ticket['grossPrice']['amountInDefaultCurrency']
+                current_ticket_dict['full_price_eur'] = ticket['grossPrice']['amount']
+                current_ticket_dict['discounted_price_huf'] = ticket['discountedGrossPrice']['amountInDefaultCurrency']
+                current_ticket_dict['discounted_price_eur'] = ticket['discountedGrossPrice']['amount']
+                current_ticket_dict['number_of_stops'] = len(ticket['touchedStations'])
+                current_ticket_dict['names_of_stops'] = [station['name'] for station in ticket['touchedStations'] if station['name']]
+                current_ticket_dict['offer_valid_until'] = ' '.join(ticket['offerValidTo'].split('+')[0].split('T'))
+                current_offer_dict['tickets'].append(current_ticket_dict)
 
-            routes: dict = offer["details"]["routes"]
+            # Offer details
+            current_details_dict = dict()
+            current_details_dict['transfers'] = offer['transfersCount']
+            current_details_dict['departure_time'] = ' '.join(offer['departure']['time'].split('+')[0].split('T'))
+            current_details_dict['arrival_time'] = ' '.join(offer['arrival']['time'].split('+')[0].split('T'))
+            current_details_dict['total_travel_time'] = offer['travelTimeMin']
+            current_offer_dict['details'] = current_details_dict
 
-        # TODO: Implement sorting logic for offers based on ticket prices
-        # sorted_offers = sorted(all_offers, key=lambda x: min(lambda y: x.tickets))
-        # print(sorted_offers)
-        print(all_offers)
+            # Routes information
+            routes = offer['details']['routes']
+            current_offer_dict['routes'] = list()
+            for route in routes:
+                current_route_dict = dict()
+                current_route_dict['start_station_name'] = route['startStation']['name']
+                current_route_dict['departure_time'] = ' '.join(route['departure']['time'].split('+')[0].split('T'))
+                current_route_dict['destination_station_name'] = route['destionationStation']['name']
+                current_route_dict['arrival_time'] = route['destionationStation']['arrivalTime']
+                current_route_dict['distance_in_km'] = route['distance']
+                current_route_dict['train_number'] = route['trainDetails']['trainNumber']
+                current_route_dict['train_name'] = route['trainDetails']['trainKind']['name']
+                current_offer_dict['routes'].append(current_route_dict)
+
+            offers_list.append(current_offer_dict)
+
+        parsed_response['offers'] = offers_list
+        print(parsed_response)
     except json.decoder.JSONDecodeError:
         print("Failed to parse JSON response.")
 else:
