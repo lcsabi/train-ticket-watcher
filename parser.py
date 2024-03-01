@@ -5,6 +5,7 @@ from requests import Response
 
 import config
 
+# TODO: change POST request format
 url = config.endpoint
 headers = config.headers
 data = config.payload
@@ -16,6 +17,7 @@ if response.status_code == 200:
         parsed_response = dict()
         offers_list = list()
 
+        # TODO: create methods
         # Offer information
         for offer in raw_response:
             current_offer_dict = dict()
@@ -59,7 +61,7 @@ if response.status_code == 200:
             offers_list.append(current_offer_dict)
 
         parsed_response['offers'] = offers_list
-        print(parsed_response)
+        print(parsed_response)  # DEBUG LINE
     except json.decoder.JSONDecodeError:
         print("Failed to parse JSON response.")
 else:
