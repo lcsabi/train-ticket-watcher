@@ -1,9 +1,72 @@
 import json
+from typing import List
 
 import requests
 from requests import Response
 
 import config
+
+
+class OfferParser:
+    @staticmethod
+    def parse_offer(raw_offer_dict) -> dict:
+        current_offer_dict = {
+            'tickets': OfferParser.parse_offer_tickets(raw_offer_dict['details']['tickets']),
+            'details': OfferParser.parse_offer_details(raw_offer_dict),
+            'routes': OfferParser.parse_offer_routes(raw_offer_dict['details']['routes'])
+        }
+        return current_offer_dict
+
+    @staticmethod
+    def parse_offer_tickets(raw_tickets_list: List[dict]) -> List[dict]:
+        parsed_tickets = []
+        for ticket in raw_tickets_list:
+            current_ticket_dict = {
+                'full_price_huf': ticket['grossPrice']['amountInDefaultCurrency'],
+                'full_price_eur': ticket['grossPrice']['amount'],
+                'discounted_price_huf': ticket['discountedGrossPrice']['amountInDefaultCurrency'],
+                'discounted_price_eur': ticket['discountedGrossPrice']['amount'],
+                'number_of_stops': len(ticket['touchedStations'] + 1),
+                'names_of_stops': [station['name'] for station in ticket['touchedStations'] if station['name']],
+                'offer_valid_until': ' '.join(ticket['offerValidTo'].split('+')[0].split('T'))
+            }
+            parsed_tickets.append(current_ticket_dict)
+        return parsed_tickets
+
+    @staticmethod
+    def parse_offer_details(raw_details_dict: dict) -> dict:
+        parsed_details = {
+            'transfers': raw_details_dict['transfersCount'],
+            'departure_time': ' '.join(raw_details_dict['departure']['time'].split('+')[0].split('T')),
+            'arrival_time': ' '.join(raw_details_dict['arrival']['time'].split('+')[0].split('T')),
+            'total_travel_time': raw_details_dict['travelTimeMin']
+        }
+        return parsed_details
+
+    @staticmethod
+    def parse_offer_routes(raw_routes_list: List[dict]) -> List[dict]:
+        parsed_routes = []
+        for route in raw_routes_list:
+            current_route_dict = {
+                'start_station_name': route['startStation']['name'],
+                'departure_time': ' '.join(route['departure']['time'].split('+')[0].split('T')),
+                'destination_station_name': route['destionationStation']['name'],
+                'arrival_time': route['destionationStation']['arrivalTime'],
+                'distance_in_km': route['distance'],
+                'train_number': route['trainDetails']['trainNumber'],
+                'train_name': route['trainDetails']['trainKind']['name']
+            }
+            parsed_routes.append(current_route_dict)
+        return parsed_routes
+
+    @staticmethod
+    def parse_response(response_json: Response):
+        parsed_response = {'offers': []}
+        for offer in response_json:
+            current_offer = OfferParser.parse_offer(offer)
+            parsed_response['offers'].append(current_offer)
+        return parsed_response
+
 
 # TODO: change POST request format
 url = config.endpoint
@@ -13,55 +76,9 @@ response: Response = requests.post(url, headers=headers, json=data)
 
 if response.status_code == 200:
     try:
-        raw_response: dict = response.json()['route']
-        parsed_response = dict()
-        offers_list = list()
-
-        # TODO: create methods
-        # Offer information
-        for offer in raw_response:
-            current_offer_dict = dict()
-            tickets = offer['details']['tickets']
-            current_offer_dict['tickets'] = list()
-
-            # Ticket information
-            for ticket in tickets:
-                current_ticket_dict = dict()
-                current_ticket_dict['full_price_huf'] = ticket['grossPrice']['amountInDefaultCurrency']
-                current_ticket_dict['full_price_eur'] = ticket['grossPrice']['amount']
-                current_ticket_dict['discounted_price_huf'] = ticket['discountedGrossPrice']['amountInDefaultCurrency']
-                current_ticket_dict['discounted_price_eur'] = ticket['discountedGrossPrice']['amount']
-                current_ticket_dict['number_of_stops'] = len(ticket['touchedStations'])
-                current_ticket_dict['names_of_stops'] = [station['name'] for station in ticket['touchedStations'] if station['name']]
-                current_ticket_dict['offer_valid_until'] = ' '.join(ticket['offerValidTo'].split('+')[0].split('T'))
-                current_offer_dict['tickets'].append(current_ticket_dict)
-
-            # Offer details
-            current_details_dict = dict()
-            current_details_dict['transfers'] = offer['transfersCount']
-            current_details_dict['departure_time'] = ' '.join(offer['departure']['time'].split('+')[0].split('T'))
-            current_details_dict['arrival_time'] = ' '.join(offer['arrival']['time'].split('+')[0].split('T'))
-            current_details_dict['total_travel_time'] = offer['travelTimeMin']
-            current_offer_dict['details'] = current_details_dict
-
-            # Routes information
-            routes = offer['details']['routes']
-            current_offer_dict['routes'] = list()
-            for route in routes:
-                current_route_dict = dict()
-                current_route_dict['start_station_name'] = route['startStation']['name']
-                current_route_dict['departure_time'] = ' '.join(route['departure']['time'].split('+')[0].split('T'))
-                current_route_dict['destination_station_name'] = route['destionationStation']['name']
-                current_route_dict['arrival_time'] = route['destionationStation']['arrivalTime']
-                current_route_dict['distance_in_km'] = route['distance']
-                current_route_dict['train_number'] = route['trainDetails']['trainNumber']
-                current_route_dict['train_name'] = route['trainDetails']['trainKind']['name']
-                current_offer_dict['routes'].append(current_route_dict)
-
-            offers_list.append(current_offer_dict)
-
-        parsed_response['offers'] = offers_list
-        print(parsed_response)  # DEBUG LINE
+        raw_response = response.json()
+        parsed = OfferParser.parse_response(raw_response['route'])
+        print(parsed)
     except json.decoder.JSONDecodeError:
         print("Failed to parse JSON response.")
 else:
