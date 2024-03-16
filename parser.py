@@ -11,11 +11,23 @@ class OfferParser:
     @staticmethod
     def parse_offer(raw_offer_dict) -> dict:
         current_offer_dict = {
-            'tickets': OfferParser.parse_offer_tickets(raw_offer_dict['details']['tickets']),
             'details': OfferParser.parse_offer_details(raw_offer_dict),
+            'tickets': OfferParser.parse_offer_tickets(raw_offer_dict['details']['tickets']),
             'routes': OfferParser.parse_offer_routes(raw_offer_dict['details']['routes'])
         }
         return current_offer_dict
+
+    @staticmethod
+    def parse_offer_details(raw_details_dict: dict) -> dict:
+        parsed_details = {
+            'from': raw_details_dict['details']['routes'][0]['startStation']['name'],
+            'to': raw_details_dict['lastStation'],
+            'transfers': raw_details_dict['transfersCount'],
+            'departure_time': ' '.join(raw_details_dict['departure']['time'].split('+')[0].split('T')),
+            'arrival_time': ' '.join(raw_details_dict['arrival']['time'].split('+')[0].split('T')),
+            'total_travel_time': raw_details_dict['travelTimeMin']
+        }
+        return parsed_details
 
     @staticmethod
     def parse_offer_tickets(raw_tickets_list: List[dict]) -> List[dict]:
@@ -26,22 +38,12 @@ class OfferParser:
                 'full_price_eur': ticket['grossPrice']['amount'],
                 'discounted_price_huf': ticket['discountedGrossPrice']['amountInDefaultCurrency'],
                 'discounted_price_eur': ticket['discountedGrossPrice']['amount'],
-                'number_of_stops': len(ticket['touchedStations'] + 1),
-                'names_of_stops': [station['name'] for station in ticket['touchedStations'] if station['name']],
+                'number_of_stops': len(ticket['touchedStations']),
+                'names_of_stops': [station['name'] for station in ticket['touchedStations'] if station['name']] + [ticket['endStation']['name']],
                 'offer_valid_until': ' '.join(ticket['offerValidTo'].split('+')[0].split('T'))
             }
             parsed_tickets.append(current_ticket_dict)
         return parsed_tickets
-
-    @staticmethod
-    def parse_offer_details(raw_details_dict: dict) -> dict:
-        parsed_details = {
-            'transfers': raw_details_dict['transfersCount'],
-            'departure_time': ' '.join(raw_details_dict['departure']['time'].split('+')[0].split('T')),
-            'arrival_time': ' '.join(raw_details_dict['arrival']['time'].split('+')[0].split('T')),
-            'total_travel_time': raw_details_dict['travelTimeMin']
-        }
-        return parsed_details
 
     @staticmethod
     def parse_offer_routes(raw_routes_list: List[dict]) -> List[dict]:
