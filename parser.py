@@ -12,7 +12,10 @@ class OfferParser:
     def parse_offer(raw_offer_dict) -> dict:
         current_offer_dict = {
             'details': OfferParser.parse_offer_details(raw_offer_dict),
-            'tickets': OfferParser.parse_offer_tickets(raw_offer_dict['details']['tickets'], raw_offer_dict['lastStation']),
+            'tickets': OfferParser.parse_offer_tickets(
+                raw_offer_dict['details']['tickets'],
+                raw_offer_dict['lastStation']
+            ),
             'routes': OfferParser.parse_offer_routes(raw_offer_dict['details']['routes'])
         }
         return current_offer_dict
