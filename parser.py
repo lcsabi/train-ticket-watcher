@@ -82,7 +82,7 @@ if response.status_code == 200:
         parsed = OfferParser.parse_response(raw_response['route'])
         print(parsed)
     except json.decoder.JSONDecodeError:
-        print("Failed to parse JSON response.")
+        print("Failed to parse JSON response from MÁV-API.")
 else:
     print("MÁV-API request unsuccessful:", response.status_code)
     print(response.text)
