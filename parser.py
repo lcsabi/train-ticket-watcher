@@ -84,7 +84,7 @@ if response.status_code == 200:
     except json.decoder.JSONDecodeError:
         print("Failed to parse JSON response.")
 else:
-    print("Request unsuccessful:", response.status_code)
+    print("MÁV-API request unsuccessful:", response.status_code)
     print(response.text)
 
 # Get tickets for 16 days in advance
