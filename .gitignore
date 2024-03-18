@@ -28,3 +28,4 @@ venv/
 
 # Ignore my own files
 /config.py
+/app.log

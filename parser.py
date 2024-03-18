@@ -6,7 +6,7 @@ import requests
 from requests import Response
 
 import config
-
+import logger_config
 
 class OfferParser:
     @staticmethod
@@ -72,7 +72,8 @@ class OfferParser:
         for offer in response_json:
             current_offer = OfferParser.parse_offer(offer)
             parsed_response['offers'].append(current_offer)
-        parsed_response['offers'] = sorted(parsed_response['offers'], key=lambda x: x['tickets'][0]['full_price_eur'])
+        # TODO: decide where the sorting happens
+        #parsed_response['offers'] = sorted(parsed_response['offers'], key=lambda x: x['tickets'][0]['full_price_eur'])
         return parsed_response
 
 
@@ -82,20 +83,22 @@ def extract_data():
     headers = config.headers
     data = config.payload
     response = requests.post(url, headers=headers, json=data)
-    logging.info("Sending POST request to MÁV-API")
+
+    logger = logger_config.setup_logger()
+    logger.info("Sending POST request to MÁV-API")
 
     if response.status_code == 200:
         try:
             raw_response = response.json()
             parsed_data = OfferParser.parse_response(raw_response['route'])
-            logging.info("Data extracted successfully from MÁV-API")
+            logger.info("Data extracted successfully from MÁV-API")
             return parsed_data
         except json.decoder.JSONDecodeError:
-            logging.error("Failed to parse JSON response from MÁV-API")
+            logger.error("Failed to parse JSON response from MÁV-API")
             return None
     else:
-        logging.error(f"MÁV-API POST request unsuccessful: {response.status_code}")
-        logging.error(response.text)
+        logger.error(f"MÁV-API POST request unsuccessful: {response.status_code}")
+        logger.error(response.text)
         return None
 
 
