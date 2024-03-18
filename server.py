@@ -21,5 +21,5 @@ def get_offers():
 
 
 if __name__ == '__main__':
-    logger = logger_config.setup_logger()
+    logger = logger_config.setup_logger('server-logger')
     app.run(debug=True)

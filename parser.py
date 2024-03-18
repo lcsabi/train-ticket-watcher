@@ -84,7 +84,7 @@ def extract_data():
     data = config.payload
     response = requests.post(url, headers=headers, json=data)
 
-    logger = logger_config.setup_logger()
+    logger = logger_config.setup_logger('parser-logger')
     logger.info("Sending POST request to MÁV-API")
 
     if response.status_code == 200:
