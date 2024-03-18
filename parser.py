@@ -1,4 +1,5 @@
 import json
+import logging
 from typing import List
 
 import requests
@@ -71,25 +72,32 @@ class OfferParser:
         for offer in response_json:
             current_offer = OfferParser.parse_offer(offer)
             parsed_response['offers'].append(current_offer)
-        return sorted(parsed_response['offers'], key=lambda x: x['tickets'][0]['full_price_eur'])
+        parsed_response['offers'] = sorted(parsed_response['offers'], key=lambda x: x['tickets'][0]['full_price_eur'])
+        return parsed_response
 
 
-# TODO: change POST request format to conform to mail system
-url = config.endpoint
-headers = config.headers
-data = config.payload
-response: Response = requests.post(url, headers=headers, json=data)
+def extract_data():
+    # TODO: change POST request format to conform to mail system
+    url = config.endpoint
+    headers = config.headers
+    data = config.payload
+    response = requests.post(url, headers=headers, json=data)
+    logging.info("Sending POST request to MÁV-API")
 
-if response.status_code == 200:
-    try:
-        raw_response = response.json()
-        parsed = OfferParser.parse_response(raw_response['route'])
-        print(parsed)
-    except json.decoder.JSONDecodeError:
-        print("Failed to parse JSON response from MÁV-API.")
-else:
-    print("MÁV-API request unsuccessful:", response.status_code)
-    print(response.text)
+    if response.status_code == 200:
+        try:
+            raw_response = response.json()
+            parsed_data = OfferParser.parse_response(raw_response['route'])
+            logging.info("Data extracted successfully from MÁV-API")
+            return parsed_data
+        except json.decoder.JSONDecodeError:
+            logging.error("Failed to parse JSON response from MÁV-API")
+            return None
+    else:
+        logging.error(f"MÁV-API POST request unsuccessful: {response.status_code}")
+        logging.error(response.text)
+        return None
+
 
 # Get tickets for 16 days in advance
 # Top 2-3 tickets / day
