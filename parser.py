@@ -66,15 +66,26 @@ class OfferParser:
         return parsed_routes
 
     @staticmethod
+    def sort_offers(offers_dict) -> dict:
+        # TODO: implement sorting logic for offers
+        # maximum amount of transfers = 1
+        # return top 3 tickets per day for mail system OR just sort them
+        # set a preferred time for travel to base comparison on
+        # TODO: how to query every ticket per day? every 6 hours?
+
+        pass
+
+    @staticmethod
     def parse_response(response_json: Response):
         parsed_response = {'offers': []}
         for offer in response_json:
             current_offer = OfferParser.parse_offer(offer)
             parsed_response['offers'].append(current_offer)
+        # OfferParser.sort_offers(parsed_response)
         return parsed_response
 
 
-# TODO: change POST request format
+# TODO: change POST request format to conform to mail system
 url = config.endpoint
 headers = config.headers
 data = config.payload
@@ -92,4 +103,4 @@ else:
     print(response.text)
 
 # Get tickets for 16 days in advance
-# Top 2 tickets / day
+# Top 2-3 tickets / day
