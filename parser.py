@@ -7,6 +7,7 @@ from requests import Response
 import config
 import logger_config
 
+
 class OfferParser:
     @staticmethod
     def parse_offer(raw_offer_dict) -> dict:
