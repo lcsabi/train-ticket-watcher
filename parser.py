@@ -81,8 +81,7 @@ class OfferParser:
         for offer in response_json:
             current_offer = OfferParser.parse_offer(offer)
             parsed_response['offers'].append(current_offer)
-        # OfferParser.sort_offers(parsed_response)
-        return parsed_response
+        return sorted(parsed_response['offers'], key=lambda x: x['tickets'][0]['full_price_eur'])
 
 
 # TODO: change POST request format to conform to mail system
