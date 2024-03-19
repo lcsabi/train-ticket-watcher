@@ -8,8 +8,8 @@ An application that informs users about monitored international (or domestic) tr
 3. Using our own endpoint, email users daily with the details of the cheapest tickets (currently the top two tickets per day, 14 days in advance)
 
 ### ***Planned features***:
-- Create a heatmap calendar and include it in the daily emails
-- Perform data analysis of the ticket information
+- Create subscription feature for users, so they can register to the train lines they are interested in
+- Perform data analysis of the ticket information and create a heatmap calendar to include in the daily emails
 - Add an endpoint that contains live information about trains we subscribe to
 
 ### ***The gathered information currently includes***:
