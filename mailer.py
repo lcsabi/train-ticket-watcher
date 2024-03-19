@@ -34,7 +34,7 @@ def send_email(offers: List[dict], logger_object: logging.Logger) -> None:
     recipients = config.recipients
 
     # Format offers into email body
-    email_body = format_offers(offers)
+    email_body = format_offers(offers, logger_object)
 
     # Create message
     msg = MIMEMultipart()
@@ -54,13 +54,15 @@ def send_email(offers: List[dict], logger_object: logging.Logger) -> None:
             logger_object.info(f'Successfully sent mails to all ({len(recipients)}) recipients')
         except (smtplib.SMTPHeloError, smtplib.SMTPRecipientsRefused, smtplib.SMTPSenderRefused, smtplib.SMTPDataError,
                 smtplib.SMTPNotSupportedError) as e:
-            logger_object.error(f'Failed to send email to recipients: {type(e).__name__} - {e}')
+            logger_object.error(f'Failed to send email to ({len(recipients)}) recipients: {type(e).__name__} - {e}')
 
 
-def format_offers(offers: List[dict]) -> str:
+def format_offers(offers: List[dict], logger_object: logging.Logger) -> str:
     formatted_offers = ""
+    logger_object.info('Formatting mail body')
     for offer in offers:
         formatted_offers += f'Offer: {offer}\n'
+    logger_object.info('Successfully formatted mail body')
     return formatted_offers
 
 
