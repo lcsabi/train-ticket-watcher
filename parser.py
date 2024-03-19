@@ -28,7 +28,9 @@ class OfferParser:
             'from': raw_details_dict['details']['routes'][0]['startStation']['name'],
             'to': raw_details_dict['lastStation'],
             'transfers': raw_details_dict['transfersCount'],
-            'transfer_stations': [route['destionationStation']['name'] for route in raw_details_dict['details']['routes'][:-1]],
+            'transfer_stations': [
+                route['destionationStation']['name'] for route in raw_details_dict['details']['routes'][:-1]
+            ],
             'departure_time': ' '.join(raw_details_dict['departure']['time'].split('+')[0].split('T')),
             'arrival_time': ' '.join(raw_details_dict['arrival']['time'].split('+')[0].split('T')),
             'total_travel_time': raw_details_dict['travelTimeMin']
@@ -45,7 +47,8 @@ class OfferParser:
                 'discounted_price_huf': ticket['discountedGrossPrice']['amountInDefaultCurrency'],
                 'discounted_price_eur': ticket['discountedGrossPrice']['amount'],
                 'number_of_stops': len(ticket['touchedStations']),
-                'names_of_stops': [station['name'] for station in ticket['touchedStations'] if station['name']] + [last_station],
+                'names_of_stops': [station['name'] for station in ticket['touchedStations'] if station['name']]
+                + [last_station],
                 'offer_valid_until': ' '.join(ticket['offerValidTo'].split('+')[0].split('T'))
             }
             parsed_tickets.append(current_ticket_dict)
@@ -101,7 +104,6 @@ def extract_data():
         logger.error(f"MÁV-API POST request unsuccessful: {response.status_code}")
         logger.error(response.text)
         return None
-
 
 # Get tickets for 16 days in advance
 # Top 2-3 tickets / day
