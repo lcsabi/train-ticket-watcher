@@ -2,17 +2,18 @@
 
 An application that informs users about monitored international (or domestic) train ticket details.
 
-### ***Current features***:
+### Current features
 1. Gather and parse the required train ticket information using the official MÁV-START API
 2. Create an endpoint (currently using Flask) with the gathered information that our services can use
 3. Using our own endpoint, email users daily with the details of the cheapest tickets (currently the top two tickets per day, 14 days in advance)
 
-### ***Planned features***:
-- Create subscription feature for users, so they can register to the train lines they are interested in
+### Planned features
+- Create subscription feature for users, so they can register to the train lines they are interested in:
+  - Users email the bot which sends a POST request to our API that the mail service handles 
 - Perform data analysis of the ticket information and create a heatmap calendar to include in the daily emails
-- Add an endpoint that contains live information about trains we subscribe to
+- Add an endpoint that contains live information about trains users subscribe to
 
-### ***The gathered information currently includes***:
+### The gathered information currently includes:
 - Departure/arrival station and time
 - Total travel time
 - Number of transfers and name of transfer stations
@@ -23,3 +24,7 @@ An application that informs users about monitored international (or domestic) tr
   - Train name and number
   - Travel distance
   - Planned: live data such as track number, delays
+
+The server has to be running for the mail service to work.
+
+### Current endpoints
