@@ -73,8 +73,8 @@ class OfferParser:
         for offer in response_json:
             current_offer = OfferParser.parse_offer(offer)
             parsed_response['offers'].append(current_offer)
-        # TODO: decide where the sorting happens
-        #parsed_response['offers'] = sorted(parsed_response['offers'], key=lambda x: x['tickets'][0]['full_price_eur'])
+        # TODO: decide where the sorting happens, either here or as part of the server as a filter
+        # parsed_response['offers'] = sorted(parsed_response['offers'], key=lambda x: x['tickets'][0]['full_price_eur'])
         logger_object.info("Data extracted successfully from MÁV-API")
         return parsed_response
 
