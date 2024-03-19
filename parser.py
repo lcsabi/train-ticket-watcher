@@ -68,7 +68,7 @@ class OfferParser:
         return parsed_routes
 
     @staticmethod
-    def parse_response(response_json: Response, logger_object: logging.Logger):
+    def parse_response(response_json: Response, logger_object: logging.Logger) -> dict:
         parsed_response = {'offers': []}
         for offer in response_json:
             current_offer = OfferParser.parse_offer(offer)
