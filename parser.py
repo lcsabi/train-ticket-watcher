@@ -1,4 +1,5 @@
 import json
+import logging
 from typing import List
 
 import requests
@@ -67,13 +68,14 @@ class OfferParser:
         return parsed_routes
 
     @staticmethod
-    def parse_response(response_json: Response):
+    def parse_response(response_json: Response, logger_object: logging.Logger):
         parsed_response = {'offers': []}
         for offer in response_json:
             current_offer = OfferParser.parse_offer(offer)
             parsed_response['offers'].append(current_offer)
         # TODO: decide where the sorting happens
         #parsed_response['offers'] = sorted(parsed_response['offers'], key=lambda x: x['tickets'][0]['full_price_eur'])
+        logger_object.info("Data extracted successfully from MÁV-API")
         return parsed_response
 
 
@@ -90,8 +92,7 @@ def extract_data():
     if response.status_code == 200:
         try:
             raw_response = response.json()
-            parsed_data = OfferParser.parse_response(raw_response['route'])
-            logger.info("Data extracted successfully from MÁV-API")
+            parsed_data = OfferParser.parse_response(raw_response['route'], logger)
             return parsed_data
         except json.decoder.JSONDecodeError:
             logger.error("Failed to parse JSON response from MÁV-API")
