@@ -64,10 +64,9 @@ def format_offers(offers: List[dict]) -> str:
     return formatted_offers
 
 
-def main():
+def start_mailer_service():
     logger = logger_config.setup_logger('mailer-logger')
     offers = retrieve_offers(logger)
-    print(offers)  # DEBUG
     # if offers:
     #     send_email(offers, logger)
     # else:
@@ -75,4 +74,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    start_mailer_service()
