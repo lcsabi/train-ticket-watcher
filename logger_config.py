@@ -9,7 +9,7 @@ def setup_logger(name: str):
     file_handler = logging.FileHandler('app.log')
 
     # Create a formatter and set it for the handlers
-    formatter = logging.Formatter('%(asctime)s | [%(name)s] | %(levelname)s | %(message)s')
+    formatter = logging.Formatter('%(asctime)s | %(name)s | %(levelname)s | %(message)s')
     file_handler.setFormatter(formatter)
 
     # Get the root logger
