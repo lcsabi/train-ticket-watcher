@@ -1,8 +1,8 @@
 # **Train Ticket Watcher**
 
-
 ### 1. Description
 An application that informs users about monitored international (or domestic) train ticket details.
+
 #### 1.1 Current features
 1. Gather and parse the required train ticket information using the official MÁV-START API
 2. Create an endpoint (currently using Flask) with the gathered information that our services can use
