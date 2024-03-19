@@ -9,7 +9,9 @@ An application that informs users about monitored international (or domestic) tr
 
 ### Planned features
 - Create subscription feature for users, so they can register to the train lines they are interested in:
-  - Users email the bot which sends a POST request to our API that the mail service handles 
+  - Users email the bot which sends a POST request to our API that the mail service handles
+  - Will require a database (probably go with SQL)
+- Caching of third-party API response
 - Perform data analysis of the ticket information and create a heatmap calendar to include in the daily emails
 - Add an endpoint that contains live information about trains users subscribe to
 
@@ -25,6 +27,6 @@ An application that informs users about monitored international (or domestic) tr
   - Travel distance
   - Planned: live data such as track number, delays
 
-The server has to be running for the mail service to work.
+#### IMPORTANT: The server has to be running for the mail service to work.
 
 ### Current endpoints
