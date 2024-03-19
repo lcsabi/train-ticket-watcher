@@ -4,12 +4,13 @@ version = "0.1.0"
 description = ""
 authors = ["László Csaba <laszlo.cs4ba@gmail.com>"]
 readme = "README.md"
-packages = [{include = "train_ticket_watcher"}]
+packages = []
 
 [tool.poetry.dependencies]
 python = "^3.11"
 requests = "^2.31.0"
 uuid = "^1.30"
+flask = "^3.0.2"
 
 
 [build-system]
