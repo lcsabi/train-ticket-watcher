@@ -2,22 +2,21 @@ import logging
 
 
 def setup_logger(name: str):
-    # Set logger level
     logging.basicConfig(level=logging.DEBUG)
 
-    # Create a file handler
+    # File handler
     file_handler = logging.FileHandler('app.log')
 
-    # Create a console handler
+    # Console handler
     # console_handler = logging.StreamHandler()
     # console_handler.setLevel(logging.DEBUG)
 
-    # Create a formatter and set it for the handlers
+    # Formatter, set handlers
     formatter = logging.Formatter('%(asctime)s | %(name)s | %(levelname)s | %(message)s')
     file_handler.setFormatter(formatter)
     # console_handler.setFormatter(formatter)
 
-    # Create logger and add handlers
+    # Logger, add handlers
     logger = logging.Logger(name)
     logger.addHandler(file_handler)
     # logger.addHandler(console_handler)
