@@ -1,6 +1,6 @@
 from flask import Flask, jsonify
 
-import logger_config
+from config import logger_config
 import parser
 
 app = Flask(__name__)

@@ -5,8 +5,7 @@ from typing import List
 import requests
 from requests import Response
 
-import config
-import logger_config
+from config import config, logger_config
 
 
 class OfferParser:
