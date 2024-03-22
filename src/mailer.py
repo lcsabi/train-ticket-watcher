@@ -7,7 +7,8 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from datetime import datetime
 
-from config import app_config, logger_config
+from config import app_config
+from config import logger_config
 
 
 # My endpoint comes here, localhost for now
@@ -24,13 +25,13 @@ def retrieve_offers(logger_object: logging.Logger):
 
 def send_email(offers: List[dict], logger_object: logging.Logger) -> None:
     # Configure SMTP settings
-    smtp_host = config.email_credentials['smtp_host']
-    smtp_port = config.email_credentials['smtp_port']
-    sender_email = config.email_credentials['sender_email']
-    sender_password = config.email_credentials['sender_password']
+    smtp_host = app_config.email_credentials['smtp_host']
+    smtp_port = app_config.email_credentials['smtp_port']
+    sender_email = app_config.email_credentials['sender_email']
+    sender_password = app_config.email_credentials['sender_password']
 
     # TODO: add more recipient addresses
-    recipients = config.recipients
+    recipients = app_config.recipients
 
     # Format offers into email body
     email_body = format_offers(offers, logger_object)

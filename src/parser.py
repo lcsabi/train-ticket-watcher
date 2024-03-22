@@ -5,7 +5,8 @@ from typing import List
 import requests
 from requests import Response
 
-from config import app_config, logger_config
+from config import app_config
+from config import logger_config
 
 
 class OfferParser:
@@ -83,9 +84,9 @@ class OfferParser:
 
 def extract_data():
     # TODO: change POST request format to conform to mail system
-    url = config.endpoint
-    headers = config.headers
-    data = config.payload
+    url = app_config.endpoint
+    headers = app_config.headers
+    data = app_config.payload
     response = requests.post(url, headers=headers, json=data)
 
     logger = logger_config.setup_logger('parser-logger')
