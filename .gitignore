@@ -27,5 +27,5 @@ venv/
 .ipynb_checkpoints/
 
 # Ignore my own files
-/config/config.py
+/config/app_config.py
 /logs/app.log

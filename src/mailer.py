@@ -7,7 +7,7 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from datetime import datetime
 
-from config import config, logger_config
+from config import app_config, logger_config
 
 
 # My endpoint comes here, localhost for now
