@@ -32,9 +32,10 @@ An application that informs users about monitored international (or domestic) tr
 #### IMPORTANT: The server has to be running for the mail service to work.
 
 #### 2.1 Endpoints
-##### 2.1.1 [GET] /api/v1/offers
-
-#### 2.2 Example response
+##### 2.1.1 /api/v1/offers [GET]
+Description of the endpoint will come here.
+#### 2.1.1.1 Example response
+Singular offer
 ```json
 {
   "offers": [
@@ -57,8 +58,7 @@ An application that informs users about monitored international (or domestic) tr
           "number_of_stops": 12,
           "names_of_stops": ["Fürth(Bay)Hbf", "Steinach(B Rothenb)", "Ansbach", "Nürnberg Hbf", "Regensburg Hbf", "Passau Hbf", "Wels Hbf", "Bécs Főpályaudvar (Wien Hbf)", "Bruck/Leitha", "Hegyeshalom(Gr)", "Győr", "Budapest-Keleti"],
           "offer_valid_until": "2024-03-31 23:59:59"
-        },
-        // Other tickets for the same offer
+        }
       ],
       "routes": [
         {
@@ -70,10 +70,17 @@ An application that informs users about monitored international (or domestic) tr
           "train_number": "21",
           "train_name": "ICE"
         },
-        // Other routes from the same offer
+        {
+          "start_station_name": "Linz Hbf",
+          "departure_time": "2024-03-30 12:17:00",
+          "destination_station_name": "Budapest-Keleti",
+          "arrival_time": "16:19",
+          "distance_in_km": 466,
+          "train_number": "63",
+          "train_name": "railjet xpress"
+        }
       ]
-    },
-    // Other offers from the same day
+    }
   ]
 }
 ```
