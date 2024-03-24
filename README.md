@@ -32,9 +32,10 @@ An application that informs users about monitored international (or domestic) tr
 #### IMPORTANT: The server has to be running for the mail service to work.
 
 #### 2.1 Endpoints
-##### 2.1.1 /api/v1/offers [GET]
+Every endpoint can be accessed via ***/api/v1***
+##### 2.1.1 /offers [GET]
 Description of the endpoint will come here.
-#### 2.1.1.1 Example response
+##### 2.1.1.1 Example response
 Singular offer
 ```json
 {
