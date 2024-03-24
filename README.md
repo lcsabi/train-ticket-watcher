@@ -31,4 +31,50 @@ An application that informs users about monitored international (or domestic) tr
 ### 2. Documentation
 #### IMPORTANT: The server has to be running for the mail service to work.
 
-### 3. Configuration file
+#### 2.1 Endpoints
+##### 2.1.1 [GET] /api/v1/offers
+
+#### 2.2 Example response
+```json
+{
+  "offers": [
+    {
+      "details": {
+        "from": "Würzburg Hbf",
+        "to": "Budapest-Keleti",
+        "transfers": 1,
+        "transfer_stations": ["Linz Hbf"],
+        "departure_time": "2024-03-30 07:34:00",
+        "arrival_time": "2024-03-30 16:19:00",
+        "total_travel_time": "08:45"
+      },
+      "tickets": [
+        {
+          "full_price_huf": 25840,
+          "full_price_eur": 68,
+          "discounted_price_huf": 25840,
+          "discounted_price_eur": 68,
+          "number_of_stops": 12,
+          "names_of_stops": ["Fürth(Bay)Hbf", "Steinach(B Rothenb)", "Ansbach", "Nürnberg Hbf", "Regensburg Hbf", "Passau Hbf", "Wels Hbf", "Bécs Főpályaudvar (Wien Hbf)", "Bruck/Leitha", "Hegyeshalom(Gr)", "Győr", "Budapest-Keleti"],
+          "offer_valid_until": "2024-03-31 23:59:59"
+        },
+        // Other tickets for the same offer
+      ],
+      "routes": [
+        {
+          "start_station_name": "Würzburg Hbf",
+          "departure_time": "2024-03-30 07:34:00",
+          "destination_station_name": "Linz Hbf",
+          "arrival_time": "11:26",
+          "distance_in_km": 433,
+          "train_number": "21",
+          "train_name": "ICE"
+        },
+        // Other routes from the same offer
+      ]
+    },
+    // Other offers from the same day
+  ]
+}
+```
+### 4. Templates
