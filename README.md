@@ -30,11 +30,14 @@ An application that informs users about monitored international (or domestic) tr
 
 ### 2. Documentation
 #### IMPORTANT: The server has to be running for the mail service to work.
+The application creates a log file under **/logs/app.log**
+
+This file contains aggregated logs from every service.
 
 #### 2.1. Endpoints
-Every endpoint can be accessed via ***/api/v1***
+Every endpoint can be accessed via **/api/v1** URL.
 ##### 2.1.1. /offers [GET]
-Description of the endpoint will come here.
+The description of the endpoint will come here.
 ##### 2.1.1.1. Example response
 Singular offer
 ```json
