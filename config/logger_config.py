@@ -5,7 +5,7 @@ def setup_logger(name: str):
     logging.basicConfig(level=logging.DEBUG)
 
     # File handler
-    file_handler = logging.FileHandler('../logs/app.log')
+    file_handler = logging.FileHandler('./logs/app.log')
 
     # Console handler
     # console_handler = logging.StreamHandler()

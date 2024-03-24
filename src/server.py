@@ -6,7 +6,7 @@ import parser
 app = Flask(__name__)
 
 
-@app.route('api/v1/offers', methods=['GET'])
+@app.route('/api/v1/offers', methods=['GET'])
 def get_offers():
     logger.info('Consumer called /api/v1/offers endpoint')
     # Extract data from the third-party API
