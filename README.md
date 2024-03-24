@@ -1,7 +1,7 @@
 # **Train Ticket Watcher**
 
 ### 1. Description
-An application that informs users about monitored international (or domestic) train ticket details.
+An application that informs users about monitored international (or domestic) train ticket details and helps them choose the best deals.
 
 #### 1.1. Current features
 1. Gather and parse the required train ticket information using the official MÁV-START API
